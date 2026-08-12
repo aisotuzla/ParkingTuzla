@@ -32,10 +32,11 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-md mx-auto flex items-center justify-between gap-2">
         {/* Title & Brand */}
         <div className="flex items-center gap-2.5">
-          <button
+                    <button
             onClick={onInstallPwa}
-            className="w-10 h-10 bg-gradient-to-br from-[#ffd86b] via-[#d4af37] to-[#8f6a13] rounded-xl flex items-center justify-center shadow-lg shadow-[#d4af37]/20 shrink-0 hover:scale-105 active:scale-95 transition-all cursor-pointer border border-[#fff5c0]/50"
+            className={`w-10 h-10 bg-gradient-to-br from-[#ffd86b] via-[#d4af37] to-[#8f6a13] rounded-xl flex items-center justify-center shadow-lg shadow-[#d4af37]/20 shrink-0 hover:scale-105 active:scale-95 transition-all cursor-pointer border border-[#fff5c0]/50 ${deferredInstallPrompt ? 'animate-pulse' : ''}`}
             title={deferredInstallPrompt ? t.pwa.installButton : 'Instaliraj Tuzla Parking'}
+            aria-label={deferredInstallPrompt ? t.pwa.installButton : 'Instaliraj Tuzla Parking'}
           >
             <Car className="w-5 h-5 text-[#040e26]" />
           </button>
@@ -101,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
                 title={title}
               >
-                <img src={flag} alt={title} className="w-5 h-5 rounded-full object-cover" />
+              <img src={flag} alt={title} width={20} height={20} loading="lazy" className="w-5 h-5 rounded-full object-cover" />
               </button>
             ))}
           </div>

@@ -5,97 +5,70 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Tuzla Parking - SMS Parking - Navigacija</title>
+  <title>Tuzla Parking – SMS Plaćanje i Navigacija</title>
   <meta name="theme-color" content="#030816">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="PWA Aplikacija za SMS plaćanje parkinga i navigaciju u Tuzli">
-  <meta name="keywords" content="parking, smart parking, tuzla, sms payment, navigation, pwa, ai, agent">
-  <meta name="language" content="bs">
-  <meta name="robots" content="index, follow, archive">
+  <meta name="apple-mobile-web-app-title" content="Tuzla Parking">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Platite parking u Tuzli putem SMS-a. Brza navigacija do parking mjesta, timer, offline podrška – besplatna PWA aplikacija.">
+  <meta name="keywords" content="parking tuzla, sms parking, plaćanje parkinga, navigacija parking, tuzla pwa">
+  <meta name="robots" content="index, follow">
   <meta name="author" content="Tuzla Parking">
-  
-  <!-- JSON-LD Structured Data for SEO & AI Agents -->
+  <link rel="canonical" href="https://tuzlaparking.netlify.app/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tuzla Parking – SMS Plaćanje i Navigacija">
+  <meta property="og:description" content="Platite parking u Tuzli putem SMS-a. Brza navigacija do parking mjesta, offline podrška.">
+  <meta property="og:url" content="https://tuzlaparking.netlify.app/">
+  <meta property="og:locale" content="bs_BA">
+
+  <!-- Resource hints: preconnect to 3rd-party origins used at runtime -->
+  <link rel="preconnect" href="https://flagcdn.com" crossorigin>
+  <link rel="dns-prefetch" href="https://flagcdn.com">
+  <link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin>
+  <link rel="dns-prefetch" href="https://basemaps.cartocdn.com">
+  <link rel="dns-prefetch" href="https://a.basemaps.cartocdn.com">
+  <link rel="dns-prefetch" href="https://b.basemaps.cartocdn.com">
+  <link rel="dns-prefetch" href="https://c.basemaps.cartocdn.com">
+
+  <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Tuzla Parking",
-    "description": "PWA Aplikacija za SMS plaćanje parkinga i navigaciju u Tuzli",
-    "url": "https://tuzlaparking.example.com",
-    "appCategory": "Parking",
-    " operatingSystem": "Web",
-    "offers": {
-      "@type": "Offer",
-      "name": "SMS Parking Payment",
-      "description": "Pay parking via SMS in Tuzla"
-    },
-    "author": {
-      "@type": "Organization",
-      "name": "Tuzla Parking"
-    },
-    "keywords": "parking, smart parking, tuzla, sms payment, navigation, pwa",
+    "description": "PWA aplikacija za SMS plaćanje parkinga i navigaciju u Tuzli",
+    "url": "https://tuzlaparking.netlify.app",
+    "appCategory": "Transportation",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "name": "SMS Parking Payment", "price": "0", "priceCurrency": "BAM" },
+    "author": { "@type": "Organization", "name": "Tuzla Parking" },
     "inLanguage": "bs",
-    "version": "1.0",
-    "featureList": [
-      "Smart Parking",
-      "SMS Payment",
-      "GPS Navigation",
-      "Offline Support",
-      "Multi-language"
-    ]
+    "applicationCategory": "UtilitiesApplication"
   }
   </script>
-  
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Tuzla Parking",
-    "description": "Smart parking application for Tuzla, Bosnia and Herzegovina",
+    "description": "Smart parking aplikacija za grad Tuzla, Bosna i Hercegovina",
     "url": "https://tuzlaparking.netlify.app",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Tuzla",
-      "addressRegion": "Bosnia and Herzegovina",
+      "addressRegion": "Tuzlanski kanton",
       "addressCountry": "BA"
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 44.5349,
-      "longitude": 18.6780
-    },
-    "openingHours": "Mo-Su 00:00-23:59",
+    "geo": { "@type": "GeoCoordinates", "latitude": 44.5349, "longitude": 18.6780 },
+    "openingHoursSpecification": { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "00:00", "closes": "23:59" },
     "priceRange": "BAM",
-    "telephone": "+387 ...",
-    "areaServed": "Tuzla, Bosnia and Herzegovina"
+    "areaServed": "Tuzla, Bosna i Hercegovina"
   }
   </script>
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Tuzla Parking",
-    "operatingSystem": "Web",
-    "softwareSource": "https://github.com/tuzlaparking/tuzla-parking",
-    "applicationCategory": "Parking",
-    "offers": {
-      "@type": "Offer",
-      "name": "SMS Parking Payment",
-      "description": "Pay parking via SMS in Tuzla"
-    },
-    "featureList": [
-      "Smart Parking",
-      "SMS Payment",
-      "GPS Navigation",
-      "Offline Support",
-      "Multi-language"
-    ],
-    "softwareVersion": "1.0"
-  }
-  </script>
-
 </head>
 
 <body

@@ -360,39 +360,41 @@ export const MapView: React.FC<MapViewProps> = ({
         <Map className="w-5 h-5" />
       </button>
       {/* Zone filter bar */}
-      <div className="absolute top-3 left-3 z-30 flex items-center justify-start pointer-events-none">
-        <div className="pointer-events-auto flex gap-1 bg-[#061d40]/95 backdrop-blur-md p-1 rounded-full border border-[#d4af37]/40 shadow-[0_0_0_1px_rgba(255,229,143,0.08),0_10px_30px_rgba(0,0,0,0.35)]">
+      <div className="absolute top-2 left-2 z-30 flex items-center justify-start pointer-events-none">
+        <div className="pointer-events-auto flex gap-0.5 bg-[#061d40]/95 backdrop-blur-md p-0.5 rounded-full border border-[#d4af37]/40 shadow-lg">
           <button
             onClick={() => onFilterZoneChange('all')}
-            className={`px-2 py-1 rounded-full text-xs font-bold transition-all ${filterZone === 'all' ? 'bg-gradient-to-r from-[#1d4ed8] via-[#1e3a8a] to-[#08153b] text-white border border-[#d4af37]/50 shadow-[0_0_18px_rgba(29,78,216,0.35)]' : 'text-slate-300 hover:text-white'}`}
+            aria-label="Sve zone"
+            className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold transition-all ${filterZone === 'all' ? 'bg-gradient-to-r from-[#1d4ed8] via-[#1e3a8a] to-[#08153b] text-white border border-[#d4af37]/50' : 'text-slate-300 hover:text-white'}`}
           >SVE</button>
           {(['0', '1', '2'] as ParkingZone[]).map(zone => (
             <button
               key={zone}
               onClick={() => onFilterZoneChange(zone)}
-              className={`px-2 py-1 rounded-full border text-xs font-bold transition-all ${filterZone === zone ? 'bg-gradient-to-r from-[#1d4ed8] via-[#1e3a8a] to-[#08153b] text-white border-[#d4af37]/60 shadow-[0_0_18px_rgba(212,175,55,0.22)]' : 'bg-[#041530] border-[#d4af37]/30 text-[#ffd77a]'}`}
-            >(Z{zone})</button>
+              aria-label={`Zona ${zone}`}
+              className={`px-1.5 py-0.5 rounded-full border text-[10px] font-bold transition-all ${filterZone === zone ? 'bg-gradient-to-r from-[#1d4ed8] via-[#1e3a8a] to-[#08153b] text-white border-[#d4af37]/60' : 'bg-[#041530] border-[#d4af37]/30 text-[#ffd77a]'}`}
+            >Z{zone}</button>
           ))}
         </div>
       </div>
-      <div className="absolute top-3 right-3 z-30 pointer-events-auto flex flex-col gap-1 bg-[#061d40]/95 backdrop-blur-md p-1 rounded-full border border-[#d4af37]/40 shadow-[0_0_0_1px_rgba(255,229,143,0.08),0_10px_30px_rgba(0,0,0,0.35)]">
+      <div className="absolute top-2 right-2 z-30 pointer-events-auto flex flex-col gap-0.5 bg-[#061d40]/95 backdrop-blur-md p-0.5 rounded-full border border-[#d4af37]/40 shadow-lg">
         <button
           type="button"
           onClick={handleZoomIn}
-          className="w-8 h-8 rounded-full bg-[#041530] border border-[#d4af37]/30 text-[#d4af37] flex items-center justify-center hover:bg-[#062844] transition-colors active:scale-95"
+          className="w-6 h-6 rounded-full bg-[#041530] border border-[#d4af37]/30 text-[#d4af37] flex items-center justify-center hover:bg-[#062844] transition-colors active:scale-95"
           aria-label="Zoom in"
           title="Zoom in"
         >
-          <ZoomIn className="w-4 h-4" />
+          <ZoomIn className="w-3 h-3" />
         </button>
         <button
           type="button"
           onClick={handleZoomOut}
-          className="w-8 h-8 rounded-full bg-[#041530] border border-[#d4af37]/30 text-[#d4af37] flex items-center justify-center hover:bg-[#062844] transition-colors active:scale-95"
+          className="w-6 h-6 rounded-full bg-[#041530] border border-[#d4af37]/30 text-[#d4af37] flex items-center justify-center hover:bg-[#062844] transition-colors active:scale-95"
           aria-label="Zoom out"
           title="Zoom out"
         >
-          <ZoomOut className="w-4 h-4" />
+          <ZoomOut className="w-3 h-3" />
         </button>
       </div>
     </div>

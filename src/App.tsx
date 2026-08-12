@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Map, List, MessageSquare, Clock, Car } from 'lucide-react';
 import { Language, NavigationRoute, ParkingLotData, ParkingPaymentSession, ParkingZone, UserLocation } from './types';
 import { TUZLA_PARKING_DATA } from './data/parkingData';
 import { TRANSLATIONS } from './data/translations';
 import { Header } from './components/Header';
-import { MapView } from './components/MapView';
-import { ParkingList } from './components/ParkingList';
-import { SmsPaymentModal } from './components/SmsPaymentModal';
-import { NavigationDrawer } from './components/NavigationDrawer';
-import { ActiveTimerWidget } from './components/ActiveTimerWidget';
-import { VehicleManager } from './components/VehicleManager';
 import { getActiveSession, saveActiveSession } from './services/smsService';
 import { calculateRoute, generateOfflineRoute } from './services/routingService';
+
+// Code-split heavy components — Leaflet alone is ~400 KB
+const MapView = lazy(() => import('./components/MapView').then(m => ({ default: m.MapView })));
+const ParkingList = lazy(() => import('./components/ParkingList').then(m => ({ default: m.ParkingList })));
+const SmsPaymentModal = lazy(() => import('./components/SmsPaymentModal').then(m => ({ default: m.SmsPaymentModal })));
+const NavigationDrawer = lazy(() => import('./components/NavigationDrawer').then(m => ({ default: m.NavigationDrawer })));
+const ActiveTimerWidget = lazy(() => import('./components/ActiveTimerWidget').then(m => ({ default: m.ActiveTimerWidget })));
+const VehicleManager = lazy(() => import('./components/VehicleManager').then(m => ({ default: m.VehicleManager })));
+const CompactSmsPanel = lazy(() => import('./components/CompactSmsPanel').then(m => ({ default: m.CompactSmsPanel })));
+
+const MapSpinner = () => (
+  <div className="w-full h-full flex items-center justify-center bg-[#040a17]">
+    <div className="w-8 h-8 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
 
 
 // Center of Tuzla city coordinates (Trg slobode / Centar)
@@ -223,10 +233,10 @@ export default function App() {
 
       {/* Main Screen Body */}
       <main className="flex-1 relative overflow-hidden flex flex-col pb-14">
+        <Suspense fallback={<MapSpinner />}>
         {activeRoute ? (
-          /* Split Screen Navigation View: Upper 50% Map, Bottom 50% Navigation Drawer */
+          /* Split Screen Navigation View */
           <div className="w-full h-full flex flex-col overflow-hidden">
-            {/* Upper 50% of screen: Map and Routing Line */}
             <div className="h-1/2 w-full relative">
               <MapView
                 parkingLots={TUZLA_PARKING_DATA}
@@ -242,9 +252,7 @@ export default function App() {
                 onFilterZoneChange={setFilterZone}
               />
             </div>
-
-            {/* Bottom 50% of screen: Solid Blue Navigation Box, Golden Title, White Text */}
-            <div className="h-1/2 w-full bg-gradient-to-b from-[#10306d]/95 via-[#081f4c]/96 to-[#030816]/99 backdrop-blur-xl border-t-2 border-[#d4af37]/60 text-white z-30 opacity-100 overflow-hidden flex flex-col shadow-2xl">
+            <div className="h-1/2 w-full bg-gradient-to-b from-[#10306d]/95 via-[#081f4c]/96 to-[#030816]/99 backdrop-blur-xl border-t-2 border-[#d4af37]/60 text-white z-30 overflow-hidden flex flex-col shadow-2xl">
               <NavigationDrawer
                 route={activeRoute}
                 onStopNavigation={() => setActiveRoute(null)}
@@ -255,50 +263,63 @@ export default function App() {
           </div>
         ) : (
           /* Normal Tab Screen Views */
-          <div className="w-full h-full overflow-y-auto">
+          <div className="w-full h-full flex flex-col overflow-hidden">
             {activeTab === 'map' && (
-              <MapView
-                parkingLots={TUZLA_PARKING_DATA}
-                selectedLot={selectedLot}
-                onSelectLot={(lot) => setSelectedLot(lot)}
-                onPaySms={handleOpenSmsPay}
-                onStartNavigation={handleStartNavigation}
-                userLocation={userLocation}
-                onRequestUserLocation={handleRequestLocation}
-                activeRoute={activeRoute}
-                currentLang={currentLang}
-                filterZone={filterZone}
-                onFilterZoneChange={setFilterZone}
-              />
+              <>
+                <div className="h-[55%] w-full relative flex-shrink-0">
+                  <MapView
+                    parkingLots={TUZLA_PARKING_DATA}
+                    selectedLot={selectedLot}
+                    onSelectLot={(lot) => setSelectedLot(lot)}
+                    onPaySms={handleOpenSmsPay}
+                    onStartNavigation={handleStartNavigation}
+                    userLocation={userLocation}
+                    onRequestUserLocation={handleRequestLocation}
+                    activeRoute={activeRoute}
+                    currentLang={currentLang}
+                    filterZone={filterZone}
+                    onFilterZoneChange={setFilterZone}
+                  />
+                </div>
+                <div className="h-[45%] w-full flex-shrink-0 bg-gradient-to-b from-[#0b1e4f] via-[#09183d] to-[#040e26] border-t-2 border-[#d4af37]/50 overflow-y-auto">
+                  <CompactSmsPanel
+                    selectedLot={selectedLot}
+                    filterZone={filterZone}
+                    onFilterZoneChange={setFilterZone}
+                    onOpenSmsPay={handleOpenSmsPay}
+                    currentLang={currentLang}
+                  />
+                </div>
+              </>
             )}
 
             {activeTab === 'list' && (
-              <ParkingList
-                parkingLots={TUZLA_PARKING_DATA}
-                selectedLot={selectedLot}
-                onSelectLot={(lot) => {
-                  setSelectedLot(lot);
-                  setActiveTab('map');
-                }}
-                onPaySms={handleOpenSmsPay}
-                onStartNavigation={handleStartNavigation}
-                userLocation={userLocation}
-                onRequestUserLocation={handleRequestLocation}
-                currentLang={currentLang}
-              />
+              <div className="flex-1 overflow-y-auto">
+                <ParkingList
+                  parkingLots={TUZLA_PARKING_DATA}
+                  selectedLot={selectedLot}
+                  onSelectLot={(lot) => {
+                    setSelectedLot(lot);
+                    setActiveTab('map');
+                  }}
+                  onPaySms={handleOpenSmsPay}
+                  onStartNavigation={handleStartNavigation}
+                  userLocation={userLocation}
+                  onRequestUserLocation={handleRequestLocation}
+                  currentLang={currentLang}
+                />
+              </div>
             )}
 
             {activeTab === 'pay' && (
-              <div className="p-3 sm:p-4 max-w-md mx-auto pb-24 text-slate-100">
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 max-w-md mx-auto pb-24 text-slate-100">
                 <div className="bg-[#1a2a44] border border-[#d4af37]/40 rounded-2xl p-4 shadow-2xl">
                   <div className="flex items-center gap-3 mb-3 border-b border-slate-700/50 pb-2.5">
                     <div className="w-9 h-9 rounded-lg bg-[#d4af37] text-[#0a1128] flex items-center justify-center font-bold shadow-sm">
                       <MessageSquare className="w-5 h-5 fill-current" />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-sm text-[#d4af37] uppercase tracking-wide">
-                        SMS Plaćanje
-                      </h3>
+                      <h3 className="font-bold text-sm text-[#d4af37] uppercase tracking-wide">SMS Plaćanje</h3>
                       <p className="text-[11px] text-slate-300 truncate">
                         {selectedLot ? selectedLot.name : 'Odaberite zonu u SMS obrascu'}
                       </p>
@@ -316,27 +337,37 @@ export default function App() {
             )}
 
             {activeTab === 'timer' && (
-              <ActiveTimerWidget
-                session={activeSession}
-                onClearSession={handleClearSession}
-                onExtendSession={() => handleOpenSmsPay(selectedLot || undefined)}
-                currentLang={currentLang}
-              />
+              <div className="flex-1 overflow-y-auto">
+                <ActiveTimerWidget
+                  session={activeSession}
+                  onClearSession={handleClearSession}
+                  onExtendSession={() => handleOpenSmsPay(selectedLot || undefined)}
+                  currentLang={currentLang}
+                />
+              </div>
             )}
 
-            {activeTab === 'vehicle' && <VehicleManager currentLang={currentLang} />}
+            {activeTab === 'vehicle' && (
+              <div className="flex-1 overflow-y-auto">
+                <VehicleManager currentLang={currentLang} />
+              </div>
+            )}
           </div>
         )}
+        </Suspense>
       </main>
 
       {/* SMS Payment Modal Drawer */}
-      <SmsPaymentModal
-        isOpen={isPayModalOpen}
-        onClose={() => setIsPayModalOpen(false)}
-        selectedLot={selectedLot}
-        onSessionStarted={handleSessionStarted}
-        currentLang={currentLang}
-      />
+      <Suspense fallback={null}>
+        <SmsPaymentModal
+          isOpen={isPayModalOpen}
+          onClose={() => setIsPayModalOpen(false)}
+          selectedLot={selectedLot}
+          onSessionStarted={handleSessionStarted}
+          currentLang={currentLang}
+        />
+      </Suspense>
+
 
       {/* Fixed Smartphone Bottom Navigation Bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-[#0f2f66]/96 via-[#081c44]/97 to-[#030816]/99 backdrop-blur-xl border-t border-[#d4af37]/30 px-3 py-2 shadow-2xl h-14">
