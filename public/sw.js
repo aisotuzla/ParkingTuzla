@@ -27,8 +27,7 @@ function isTileRequest(url) {
     url.includes('basemaps.cartocdn.com') ||
     url.includes('stadiamaps') ||
     url.includes('mapbox') ||
-    url.includes('/pmtiles/') ||
-    url.match(/\/\d+\/\d+\/\d+(\.pmtiles|\.jpg|\.webp)?/)
+    url.match(/\/\d+\/\d+\/\d+(\.jpg|\.webp)?/)
   );
 }
 

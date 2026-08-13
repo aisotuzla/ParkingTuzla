@@ -1,0 +1,22 @@
+﻿{
+    "tilejson": "1.0.0",
+    "name": "My Map",
+    "description": "Made with Maperitive",
+    "attribution": "Map data:© dl-de/by-2-0",
+    "tiles": [
+        "tile/{z}/{x}/{y}.webp"
+    ],
+    "minzoom": 13,
+    "maxzoom": 17,
+    "bounds": [
+        18.5849552567015,
+        44.4552455672625,
+        18.7554696789662,
+        44.5635024200155
+    ],
+    "center": [
+        18.670212467833849,
+        44.509373993639,
+        13
+    ]
+}
