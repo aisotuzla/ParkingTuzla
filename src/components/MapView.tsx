@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Map, ZoomIn, ZoomOut } from 'lucide-react';
+import { Car, Map, ZoomIn, ZoomOut } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Language, NavigationRoute, ParkingLotData, ParkingZone, UserLocation } from '../types';
@@ -37,6 +37,28 @@ export const MapView: React.FC<MapViewProps> = ({
   const mapRef = useRef<L.Map | null>(null);
   const onlineLayerRef = useRef<L.TileLayer | null>(null);
   const offlineLayerRef = useRef<L.TileLayer | null>(null);
+  // State to hold the beforeinstallprompt event
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+
+  // Listen for the PWA install prompt event
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ev = e as any;
+      ev.preventDefault();
+      setInstallPrompt(ev);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      const { outcome } = await installPrompt.userChoice;
+      console.log('User response to the install prompt', outcome);
+      setInstallPrompt(null);
+    }
+  };
   const userMarkerRef = useRef<L.Marker | null>(null);
   const markersRef = useRef<Record<string, L.Marker>>({});
   const routeRef = useRef<L.Polyline | null>(null);
@@ -69,7 +91,8 @@ export const MapView: React.FC<MapViewProps> = ({
     if (mapStyle === 'online') {
       if (map.hasLayer(onlineLayer)) map.removeLayer(onlineLayer);
       if (!map.hasLayer(offlineLayer)) offlineLayer.addTo(map);
-      map.setMinZoom(14);
+      // Adjust offline zoom to include newly added levels 11-13
+      map.setMinZoom(11);
       map.setMaxZoom(17);
       map.setZoom(15);
       setMapStyle('offline');
@@ -108,7 +131,7 @@ export const MapView: React.FC<MapViewProps> = ({
     );
 
     const offlineLayer = L.tileLayer('/tile/{z}/{x}/{y}.webp', {
-      minZoom: 14,
+      minZoom: 11,
       maxZoom: 17,
       maxNativeZoom: 17,
       tileSize: 256,
@@ -131,7 +154,7 @@ export const MapView: React.FC<MapViewProps> = ({
         map.removeLayer(onlineLayer);
       }
       offlineLayer.addTo(map);
-      map.setMinZoom(14);
+      map.setMinZoom(11);
       map.setMaxZoom(17);
       map.setZoom(15);
       setMapStyle('offline');
@@ -220,7 +243,7 @@ export const MapView: React.FC<MapViewProps> = ({
 
       const icon = L.divIcon({ className: '', html: div.outerHTML, iconSize: [32, 32], iconAnchor: [16, 32] });
       const marker = L.marker([lat, lng], { icon }).addTo(map);
-      
+
       const popupHtml = `
         <div class="p-3.5 bg-gradient-to-br from-[#091d42] via-[#06142e] to-[#030914] text-white rounded-2xl border border-[#d4af37]/40 shadow-2xl min-w-[210px] max-w-[260px]">
           <span class="inline-flex px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-[#d4af37]/20 text-[#f5d77f] border border-[#d4af37]/40 mb-1">
@@ -248,7 +271,7 @@ export const MapView: React.FC<MapViewProps> = ({
           </div>
         </div>
       `;
-      
+
       marker.bindPopup(popupHtml);
       marker.on('popupopen', () => {
         const popupElement = marker.getPopup()?.getElement();
@@ -396,6 +419,18 @@ export const MapView: React.FC<MapViewProps> = ({
         >
           <ZoomOut className="w-3 h-3" />
         </button>
+        {/* Install PWA button */}
+        {installPrompt && (
+          <button
+            type="button"
+            onClick={handleInstallClick}
+            className="relative w-11 h-11 rounded-full bg-[#061d40]/95 backdrop-blur-md border border-[#d4af37]/40 flex items-center justify-center active:scale-95 animate-pulse"
+            aria-label="Install App"
+            title="Install App"
+          >
+            <Car className="w-5 h-5 text-[#ffd77a]" style={{ filter: 'saturate(1.5)' }} />
+          </button>
+        )}
       </div>
     </div>
   );
