@@ -1,6 +1,6 @@
-# 🚗 TuzlaPark – Smart Parking & Navigation
+# 🚗 ParkingTuzla – Smart Parking & Navigation
 
-TuzlaPark is a Progressive Web Application (PWA) that simplifies parking in Tuzla by combining interactive maps, GPS navigation, SMS parking payment, voice commands and offline support into a single mobile-first application.
+Parking Tuzla is a Progressive Web Application (PWA) that simplifies parking in Tuzla by combining interactive maps, GPS navigation, SMS parking payment, timer and offline support into a single app working on PC - Android - IOS. SMS Payment is for Public City owned parking lots in Tuzla. NOT PRIVATE PARKING LOTS
 
 ---
 
@@ -23,11 +23,6 @@ TuzlaPark is a Progressive Web Application (PWA) that simplifies parking in Tuzl
 - Closest parking finder
 - Offline map fallback
 
-### 🎤 Voice Assistant
-
-- Voice commands
-- Hands-free parking search
-- Navigation control
 
 ### 📱 Progressive Web App
 
@@ -72,32 +67,6 @@ src/
  └── assets/
 ```
 
----
-
-## Installation
-
-```bash
-npm install
-```
-
-Create
-
-```
-.env.local
-```
-
-```
-GEMINI_API_KEY=YOUR_API_KEY
-```
-
-Run
-
-```bash
-npm run dev
-```
-
----
-
 ## Main Functions
 
 ✔ SMS Parking Payment
@@ -107,8 +76,6 @@ npm run dev
 ✔ Parking Zones
 
 ✔ Offline Maps
-
-✔ Voice Assistant
 
 ✔ Parking Session Timer
 
@@ -127,10 +94,11 @@ MIT
 ---
 
 Made with ❤️ for the City of Tuzla.
+Team AISO TUZLA
+__________________________________________________________________________________________________________________________________________________________________________
+# 🚗 Parking Tuzla – Pametno Parkiranje i Navigacija
 
-# 🚗 TuzlaPark – Pametno Parkiranje i Navigacija
-
-TuzlaPark je moderna Progressive Web aplikacija koja omogućava brzo pronalaženje parking mjesta, SMS plaćanje parkinga, navigaciju, glasovne komande i rad bez internet veze.
+Parking Tuzla je moderna Progressive Web aplikacija koja omogućava brzo pronalaženje parking mjesta, SMS plaćanje parkinga, navigaciju, radi na svim uređajima(PC, Android, IOS) i rad bez internet veze.
 
 ---
 
@@ -152,12 +120,6 @@ TuzlaPark je moderna Progressive Web aplikacija koja omogućava brzo pronalažen
 - Navigacija do parking mjesta
 - Najbliži parking
 - Offline mapa
-
-### 🎤 Glasovne komande
-
-- Glasovno upravljanje
-- Pretraga parkinga
-- Pokretanje navigacije
 
 ### 📱 PWA
 
@@ -184,30 +146,6 @@ TuzlaPark je moderna Progressive Web aplikacija koja omogućava brzo pronalažen
 - Tailwind CSS
 - Lucide Icons
 - Service Worker
-
----
-
-## Instalacija
-
-```bash
-npm install
-```
-
-Kreirati
-
-```
-.env.local
-```
-
-```
-GEMINI_API_KEY=YOUR_API_KEY
-```
-
-Pokretanje
-
-```bash
-npm run dev
-```
 
 ---
 
@@ -238,3 +176,5 @@ MIT
 ---
 
 Razvijeno za građane i posjetioce grada Tuzle.
+TIM AISOTUZLA
+https://aiso-tuzla.lovable.app
